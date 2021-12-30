@@ -1,13 +1,13 @@
 import dotenv from 'dotenv';
 dotenv.config()
-
 import express from 'express';
 import mongoose from 'mongoose';
 import feedbackRoute from './routes/feedbackRoute.js';
 import cors from 'cors';
-
+import jwt from 'express-jwt';
+import jwks from 'jwks-rsa';
 const PORT = process.env.PORT || 5000
-
+const app = express()
 const jwtCheck = jwt({
       secret: jwks.expressJwtSecret({
           cache: true,
@@ -40,18 +40,20 @@ console.error(error)
 });
 mongoose.connection.once("open", function() {
     console.log("Connection with MongoDB was successful");
+    app.listen(PORT, function() {
+      console.log("Server is running on Port: " + PORT);
+    });
+    if (process.env.NODE_ENV === 'production') {
+      // Exprees will serve up production assets
+      app.use(express.static('./client/build'));
+    
+    
+    }
+   
+    
   });
 
-  if (process.env.NODE_ENV === 'production') {
-    // Exprees will serve up production assets
-    app.use(express.static('./client/build'));
-  
-  
-  }
-  app.listen(PORT, function() {
-    console.log("Server is running on Port: " + PORT);
-  });
-  
+ 
 
 
 app.use(cors())

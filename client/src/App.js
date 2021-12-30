@@ -7,12 +7,18 @@ import FeedbackForm from './components/FeedbackForm'
 import FeedbackStats from './components/FeedbackStats'
 import AboutPage from './pages/AboutPage'
 import AboutIconLink from './components/AboutIconLink'
+import LoginButton from './components/LoginButton'
+import LogoutButton from './components/LogoutButton'
+import Profile from './components/Profile'
 // CONTEXT
 import { FeedbackProvider } from './context/FeedbackContext'
 
 const App = () => {
   return (
     <FeedbackProvider>
+      <LoginButton/>
+      <LogoutButton/>
+      <Profile/>
       <Router>
         <Header />
         <div className='container'>

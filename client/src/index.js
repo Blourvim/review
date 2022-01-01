@@ -11,6 +11,8 @@ ReactDom.render(
     domain="dev-w-xp6bpi.us.auth0.com"
     clientId="UZQ63NRbdq35npn85CpYnMQitlLtUTkZ"
     redirectUri={window.location.origin}
+    audience="https://dev-w-xp6bpi.us.auth0.com/api/v2/"
+    scope="read:achivements write:achivements"
   >
     <App />
     </Auth0Provider>

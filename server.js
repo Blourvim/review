@@ -26,9 +26,9 @@ audience: 'https://review-blourvim.herokuapp.com',
 issuer: 'https://dev-w-xp6bpi.us.auth0.com/',
 algorithms: ['RS256']
 });
-
-
 app.use(cors(corsOptions));
+
+
 
 
 mongoose.connect(process.env.MONGO_DB_KEY,
@@ -52,13 +52,14 @@ mongoose.connection.once("open", function() {
    
     
   });
-const testsLog = async(req,res,next)=>{
-  next()
-
+const test =(req,res,next)=>{
+  console.log(req)
+next()
 }
-  app.get('/api/achivements', testsLog,jwtCheck,Guard.check(['read:achivements']),function (req, res) {
-    res.send('Secured Resource');
-    console.log('resource accessed')
+
+  app.get('/api/achivements',test,jwtCheck ,Guard.check(['read:achivements']),function (req, res) {
+    res.json({ username: 'Flavio' })
+        console.log('resource accessed')
 });
 
 

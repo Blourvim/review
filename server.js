@@ -1,35 +1,35 @@
 import dotenv from 'dotenv';
 dotenv.config()
 import express from 'express';
+const app = express()
+
 import mongoose from 'mongoose';
 import feedbackRoute from './routes/feedbackRoute.js';
 import cors from 'cors';
 import jwt from 'express-jwt';
 import jwks from 'jwks-rsa';
+import guard from 'express-jwt-permissions';
+const Guard = guard()
 const PORT = process.env.PORT || 5000
-const app = express()
+const corsOptions =  {
+  origin: 'http://localhost:3000',
+};
+
 const jwtCheck = jwt({
-      secret: jwks.expressJwtSecret({
-          cache: true,
-          rateLimit: true,
-          jwksRequestsPerMinute: 5,
-          jwksUri: 'https://dev-w-xp6bpi.us.auth0.com/.well-known/jwks.json'
-    }),
-    audience: 'https://review-blourvim.herokuapp.com',
-    issuer: 'https://dev-w-xp6bpi.us.auth0.com/',
-    algorithms: ['RS256']
+  secret: jwks.expressJwtSecret({
+      cache: true,
+      rateLimit: true,
+      jwksRequestsPerMinute: 5,
+      jwksUri: 'https://dev-w-xp6bpi.us.auth0.com/.well-known/jwks.json'
+}),
+audience: 'https://review-blourvim.herokuapp.com',
+issuer: 'https://dev-w-xp6bpi.us.auth0.com/',
+algorithms: ['RS256']
 });
+app.use(cors(corsOptions));
 
 
-app.get('/authorized',jwtCheck, (req, res)=> {
-    res.send('Secured Resource');
-});
 
-
-app.use(express.json({
-  type: ['application/json', 'text/plain']
-}))
-app.use(express.urlencoded({extended: true}));
 
 mongoose.connect(process.env.MONGO_DB_KEY,
     {
@@ -52,10 +52,23 @@ mongoose.connection.once("open", function() {
    
     
   });
+const test =(req,res,next)=>{
+  console.log(req)
+next()
+}
 
- 
+  app.get('/api/achivements',test,jwtCheck ,Guard.check(['read:achivements']),function (req, res) {
+    res.json({ username: 'Flavio' })
+        console.log('resource accessed')
+});
 
 
-app.use(cors())
+
+app.use(function(err, req, res, next){
+  console.error(err.stack);
+  return res.set(err.headers).status(err.status).json({ message: err.message });
+});
+
+
   
 app.use('/api/feedbacks',feedbackRoute);

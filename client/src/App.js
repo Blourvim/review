@@ -7,9 +7,13 @@ import FeedbackForm from './components/FeedbackForm'
 import FeedbackStats from './components/FeedbackStats'
 import AboutPage from './pages/AboutPage'
 import AboutIconLink from './components/AboutIconLink'
+import Profile from './components/Profile'
+import CheckLogin from './components/CheckLogin'
+import Achivements from './components/Achivements'
+// AUTH
 import LoginButton from './components/LoginButton'
 import LogoutButton from './components/LogoutButton'
-import Profile from './components/Profile'
+
 // CONTEXT
 import { FeedbackProvider } from './context/FeedbackContext'
 
@@ -18,6 +22,7 @@ const App = () => {
     <FeedbackProvider>
       <LoginButton/>
       <LogoutButton/>
+      <CheckLogin/>
       <Profile/>
       <Router>
         <Header />
@@ -35,6 +40,7 @@ const App = () => {
               }
             ></Route>
             <Route path='/about' element={<AboutPage />} />
+            <Route path='/achivements' element={<Achivements/>}/>
           </Routes>
           <AboutIconLink />
         </div>

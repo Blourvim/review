@@ -15,7 +15,6 @@ const Profile = () => {
           scope: "read:achivements write:achivements"
         });
         const userDetailsByIdUrl = `https://${domain}/api/v2/users/${user.sub}`;
-  console.log(`Bearer ${accessToken}`)
         const metadataResponse = await fetch('/api/achivements', {
           headers: {
             Authorization: `Bearer ${accessToken}`
@@ -26,6 +25,8 @@ const Profile = () => {
   
         setUserMetadata(user_metadata);
         console.log(user_metadata)
+        console.log(JSON.stringigy(user_metadata))
+
       } catch (e) {
         console.log(e.message);
       }
